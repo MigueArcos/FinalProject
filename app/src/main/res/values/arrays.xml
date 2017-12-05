@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="genre_catalogue">
+        <item>Femenino</item>
+        <item>Masculino</item>
+    </string-array>
+
+</resources>
