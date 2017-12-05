@@ -27,6 +27,7 @@ import android.widget.TextView;
 import miguel.example.com.finalProject.FirebaseServices;
 import miguel.example.com.finalProject.Fragments.PlacesByWeatherListFragment;
 import miguel.example.com.finalProject.Fragments.PlacesListFragment;
+import miguel.example.com.finalProject.Fragments.RoutineListFragment;
 import miguel.example.com.finalProject.MyUtils;
 import miguel.example.com.finalProject.R;
 import miguel.example.com.finalProject.TicTacToe.TicTacToeFragment;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences ShPrUser;
     public static final int LOCATION_PERMISSION = 1;
     private int CurrentFragmentID = 0;
+    private RoutineListFragment routineListFragment;
     private PlacesListFragment placesListFragment;
     private PlacesByWeatherListFragment placesByWeatherListFragment;
     private TicTacToeFragment ticTacToeFragment;
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         MenuItem item = navigationView.getMenu().findItem(R.id.it1);
         item.setChecked(true);
-        getSupportFragmentManager().beginTransaction().add(R.id.content_frame, placesByWeatherListFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_frame, routineListFragment).commit();
     }
 
     void checkPermissions() {
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         placesByWeatherListFragment = new PlacesByWeatherListFragment();
         placesListFragment = new PlacesListFragment();
         ticTacToeFragment = new TicTacToeFragment();
+        routineListFragment = new RoutineListFragment();
     }
 
     @Override
@@ -131,20 +134,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         switch (item.getItemId()) {
             case R.id.it1:
-                fragment = placesByWeatherListFragment;
+                fragment = routineListFragment;
                 CurrentFragmentID = item.getItemId();
                 break;
             case R.id.it2:
-                fragment = placesListFragment;
+                fragment = placesByWeatherListFragment;
                 CurrentFragmentID = item.getItemId();
                 break;
             case R.id.it3:
-                fragment = ticTacToeFragment;
+                fragment = placesListFragment;
                 CurrentFragmentID = item.getItemId();
                 break;
             case R.id.it4:
+                fragment = ticTacToeFragment;
                 CurrentFragmentID = item.getItemId();
-                return false;
+                break;
 
             case R.id.about:
                 message.setMessage(getString(R.string.about_app));

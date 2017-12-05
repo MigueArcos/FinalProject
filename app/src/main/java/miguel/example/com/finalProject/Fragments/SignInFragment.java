@@ -152,12 +152,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
             // Sign in success, update UI with the signed-in user's information
             Log.d(LOG_TAG, "signInWithEmail:success");
             DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(task.getResult().getUser().getUid());
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(intent);
             userReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
                     System.out.println(user);
-                    progressDialog.dismiss();
                     ShPrUser.edit().putString("birthDate", user.getBirthDate()).putString("name", user.getName()).putString("email", user.getEmail()).putString("genre", user.getGenre()).putString("uid", task.getResult().getUser().getUid()).apply();
 
                     FirebaseServices.getInstance(getActivity()).getScore("GamesScore", new FirebaseServices.GamesScoreListener() {
@@ -167,12 +168,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
                                 ShPrUser.edit().putInt("wonGames", score.getWonGames()).apply();
                                 ShPrUser.edit().putInt("lostGames", score.getLostGames()).apply();
                             }
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            getActivity().startActivity(intent);
                         }
 
                         @Override
-                        public void onError(String error) {
+                        public void onScoreError(String error) {
                             System.out.println("The read failed: " + error);
                         }
                     });

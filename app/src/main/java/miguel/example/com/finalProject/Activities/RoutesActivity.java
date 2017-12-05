@@ -40,7 +40,7 @@ public class RoutesActivity extends AppCompatActivity implements OnMapReadyCallb
         placeLng = getIntent().getDoubleExtra("placeLng", 0);
         placeName = getIntent().getStringExtra("name");
         placeAddress = getIntent().getStringExtra("address");
-        FirebaseServices.getInstance(this).addToRoutine("routine", "Visitaste: "+placeName);
+        FirebaseServices.getInstance(this).addToRoutine("routine", "Visitaste: "+placeName, "Visitar");
         mapFragment.getMapAsync(this);
     }
 

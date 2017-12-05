@@ -8,14 +8,23 @@ public class Routine {
     private String activity;
     private String date;
     private String time;
-
+    private String baseActivity;
     public Routine() {
     }
 
-    public Routine(String activity, String date, String time) {
+    public Routine(String activity, String date, String time, String baseActivity) {
         this.activity = activity;
         this.date = date;
         this.time = time;
+        this.baseActivity = baseActivity;
+    }
+
+    public String getBaseActivity() {
+        return baseActivity;
+    }
+
+    public void setBaseActivity(String baseActivity) {
+        this.baseActivity = baseActivity;
     }
 
     public String getActivity() {
@@ -40,5 +49,9 @@ public class Routine {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDateTime(){
+        return date +" a las "+ time;
     }
 }

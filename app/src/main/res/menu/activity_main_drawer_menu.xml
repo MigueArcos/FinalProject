@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/it1"
-            android:title="Something" />
+            android:title="@string/routine_list_fragment_label" />
         <item
             android:id="@+id/it2"
             android:title="Something 2" />

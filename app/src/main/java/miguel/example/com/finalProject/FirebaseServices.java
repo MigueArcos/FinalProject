@@ -32,11 +32,11 @@ public class FirebaseServices {
     public interface RoutineReadyListener {
         void onRoutineReady(List<Routine> routineList);
 
-        void onError(String error);
+        void onRoutineError(String error);
     }
     public interface GamesScoreListener {
         void onScoreReady(Score scores);
-        void onError(String error);
+        void onScoreError(String error);
     }
 
     public FirebaseServices() {
@@ -61,10 +61,10 @@ public class FirebaseServices {
         return Instance;
     }
 
-    public void addToRoutine(String node, String activity) {
+    public void addToRoutine(String node, String activity, String baseActivity) {
         //The .push() method is a way to insert a new element with an unique key like a database
         DatabaseReference userRoutine = databaseReference.child(node + "/" + authCache.getString("uid", "NoUser")).push();
-        userRoutine.setValue(new Routine(activity, MyUtils.getDate(), MyUtils.getTime()));
+        userRoutine.setValue(new Routine(activity, MyUtils.getDate(), MyUtils.getTime(), baseActivity));
         userRoutine.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -115,7 +115,7 @@ public class FirebaseServices {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(LOG_TAG, "The read failed: " + databaseError.getCode());
-                listener.onError("The read failed: " + databaseError.getCode());
+                listener.onScoreError("The read failed: " + databaseError.getCode());
             }
         });
     }
@@ -129,15 +129,15 @@ public class FirebaseServices {
                 for (DataSnapshot routine : dataSnapshot.getChildren()) {
                     routineList.add(routine.getValue(Routine.class));
                 }
-                Log.d(LOG_TAG, "Read success " + routineList.get(0).getActivity());
+                //Log.d(LOG_TAG, "Read success " + routineList.get(0).getActivity());
 
-                //listener.onRoutineReady(routineList);
+                listener.onRoutineReady(routineList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(LOG_TAG, "The read failed: " + databaseError.getCode());
-                //listener.onRouteError("The read failed: " + databaseError.getCode());
+                listener.onRoutineError("The read failed: " + databaseError.getCode());
             }
         });
     }

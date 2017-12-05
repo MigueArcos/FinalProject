@@ -15,21 +15,22 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import miguel.example.com.finalProject.FirebaseServices;
+import miguel.example.com.finalProject.Models.Score;
 import miguel.example.com.finalProject.R;
 
 /**
  * Created by 79812 on 02/12/2017.
  */
 
-public class TicTacToeFragment extends Fragment implements View.OnClickListener{
+public class TicTacToeFragment extends Fragment implements View.OnClickListener, FirebaseServices.GamesScoreListener{
 
     public Button button1, button2, button3, button4, button5, button6,
             button7, button8, button9, start, reset;
     public RadioButton naught, cross;
-    public TextView text;
+    public TextView text, score;
     public ComputerLogic logic; // For when not using minimax
     public PerfectComputerLogic perfectLogic; // For when using minimax
-    public Menu menu;
     public MenuItem item;
     private AlertDialog.Builder dialog;
     public boolean playerTurn = false;
@@ -50,6 +51,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
         perfectLogic = new PerfectComputerLogic();
         dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.app_name));
+        FirebaseServices.getInstance(getActivity()).getScore("GamesScore", this);
         return rootView;
     }
 
@@ -65,6 +67,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
                     }
                 });
                 dialog.show();
+                FirebaseServices.getInstance(getActivity()).saveScore("GamesScore", true);
                 break;
             case MACHINE_WON:
                 dialog.setMessage(MACHINE_WON);
@@ -75,6 +78,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
                     }
                 });
                 dialog.show();
+                FirebaseServices.getInstance(getActivity()).saveScore("GamesScore", false);
                 break;
             case TIE:
                 dialog.setMessage(TIE);
@@ -101,7 +105,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
         button9 = rootView.findViewById(R.id.button9);
         start = rootView.findViewById(R.id.start);
         reset = rootView.findViewById(R.id.reset);
-
+        score = rootView.findViewById(R.id.fragment_tic_tac_toe_score);
         naught = rootView.findViewById(R.id.naught);
         cross = rootView.findViewById(R.id.cross);
 
@@ -132,6 +136,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
                 start.setVisibility(View.INVISIBLE);
                 naught.setVisibility(View.INVISIBLE);
                 cross.setVisibility(View.INVISIBLE);
+                FirebaseServices.getInstance(getActivity()).addToRoutine("routine","Jugaste al gato", "Jugar");
                 if(cross.isChecked()) {
                     playerTurn = true;
                     text.setText("Player's turn");
@@ -177,6 +182,8 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
         button7.setText("");
         button8.setText("");
         button9.setText("");
+
+        FirebaseServices.getInstance(getActivity()).getScore("GamesScore", this);
     }
     public void placeObject(int id) {
         Button button = rootView.findViewById(id);
@@ -282,5 +289,18 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener{
     public boolean naughtsDiagonal() {
         return (button1.getText().equals("O") && button5.getText().equals("O") && button9.getText().equals("O")) ||
                 (button3.getText().equals("O") && button5.getText().equals("O") && button7.getText().equals("O"));
+    }
+
+    @Override
+    public void onScoreReady(Score scores) {
+        if (scores != null){
+            score.setText(scores.getWonGames() +"-" + scores.getLostGames());
+        }
+
+    }
+
+    @Override
+    public void onScoreError(String error) {
+        Log.d("Score error", error);
     }
 }

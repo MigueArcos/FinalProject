@@ -30,11 +30,12 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import miguel.example.com.finalProject.FirebaseServices;
+import miguel.example.com.finalProject.Activities.RoutesActivity;
 import miguel.example.com.finalProject.Adapters.PlacesListAdapter;
+import miguel.example.com.finalProject.Adapters.RoutineListAdapter;
+import miguel.example.com.finalProject.FirebaseServices;
 import miguel.example.com.finalProject.Models.Place;
 import miguel.example.com.finalProject.R;
-import miguel.example.com.finalProject.Activities.RoutesActivity;
 import miguel.example.com.finalProject.VolleySingleton;
 
 import static miguel.example.com.finalProject.Activities.MainActivity.LOCATION_PERMISSION;
@@ -62,7 +63,6 @@ public class PlacesListFragment extends Fragment implements PlacesListAdapter.Ad
                 ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION);
             }
         }
-        FirebaseServices.getInstance(getActivity()).getRoutine("routine", null);
         list = rootView.findViewById(R.id.list);
         data = new ArrayList<>();
         adapter = new PlacesListAdapter(data, this);
@@ -191,7 +191,7 @@ public class PlacesListFragment extends Fragment implements PlacesListAdapter.Ad
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, myLocationListener);
     }
     */
-    public void checkLocation(){
+    public void checkLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -206,6 +206,7 @@ public class PlacesListFragment extends Fragment implements PlacesListAdapter.Ad
             }
         }
     }
+
     public boolean isGPSEnabled(Context mContext) {
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

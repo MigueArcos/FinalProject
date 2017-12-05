@@ -36,4 +36,7 @@
     <string name="main_activity_close_session_confirmation">¿Estás seguro de que deseas cerrar tu sesión?</string>
     <string name="positive_button_label">Si</string>
     <string name="negative_button_label">No</string>
+    <string name="fragment_routine_list_empty_label">No hay datos de tus rutinas aun</string>
+    <string name="routine_list_fragment_label">Mi Rutina</string>
+    <string name="fragment_tic_tac_toe_score_label">Historico de puntajes</string>
 </resources>
