@@ -201,22 +201,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
             DatabaseReference userReference = databaseReference.child(task.getResult().getUser().getUid());
             final String _birthDate = birthDate.getText().toString(), _name = name.getText().toString(), _email = email.getText().toString(), _genre = genre.getSelectedItem().toString();
             userReference.setValue(new User(_birthDate, _name, _email, _genre));
-            userReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d(LOG_TAG, "Data correctly saved");
-                    progressDialog.dismiss();
-                    ShPrUser.edit().putString("birthDate", _birthDate).putString("name", _name).putString("email", _email).putString("genre",_genre).putString("uid", task.getResult().getUser().getUid()).apply();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    getActivity().startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    progressDialog.dismiss();
-                    Log.d(LOG_TAG, "Error trying to save data");
-                }
-            });
+            progressDialog.dismiss();
+            ShPrUser.edit().putString("birthDate", _birthDate).putString("name", _name).putString("email", _email).putString("genre",_genre).putString("uid", task.getResult().getUser().getUid()).apply();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(intent);
         } else {
             // If sign in fails, display a message to the user.
             progressDialog.dismiss();

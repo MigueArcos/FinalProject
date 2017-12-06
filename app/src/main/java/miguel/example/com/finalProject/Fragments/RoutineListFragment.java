@@ -40,11 +40,11 @@ public class RoutineListFragment extends Fragment implements FirebaseServices.Ro
         list.setAdapter(adapter);
         refreshLayout = rootView.findViewById(R.id.swipeRefresh);
         refreshLayout.setRefreshing(true);
-        FirebaseServices.getInstance(getActivity()).getRoutine("routine", this);
+        FirebaseServices.getInstance(getActivity()).getRoutine(this);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FirebaseServices.getInstance().getRoutine("routine", RoutineListFragment.this);
+                FirebaseServices.getInstance().getRoutine(RoutineListFragment.this);
             }
         });
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -67,7 +67,7 @@ public class RoutineListFragment extends Fragment implements FirebaseServices.Ro
 
     @Override
     public void onRoutineError(String error) {
-        Log.d("Error getting routine", error);
+        Log.d("Error getting routine_icon", error);
         refreshLayout.setRefreshing(false);
     }
 }

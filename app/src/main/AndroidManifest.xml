@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -21,7 +21,7 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/LoginActivityTitle"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="true"
             android:theme="@style/AppTheme"
@@ -35,8 +35,9 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activities.RoutesActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.RoutesActivity" />
+        <activity android:name=".Activities.ViewTvShowSiteActivity"/>
     </application>
 
 </manifest>

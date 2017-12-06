@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import miguel.example.com.finalProject.Models.Routine;
-import miguel.example.com.finalProject.Models.Score;
+import miguel.example.com.finalProject.Models.User;
 
 /**
  * Created by 79812 on 04/12/2017.
@@ -35,7 +35,7 @@ public class FirebaseServices {
         void onRoutineError(String error);
     }
     public interface GamesScoreListener {
-        void onScoreReady(Score scores);
+        void onScoreReady(User.Score score);
         void onScoreError(String error);
     }
 
@@ -61,14 +61,14 @@ public class FirebaseServices {
         return Instance;
     }
 
-    public void addToRoutine(String node, String activity, String baseActivity) {
+    public void addToRoutine(String activity, String baseActivity) {
         //The .push() method is a way to insert a new element with an unique key like a database
-        DatabaseReference userRoutine = databaseReference.child(node + "/" + authCache.getString("uid", "NoUser")).push();
+        DatabaseReference userRoutine = databaseReference.child("routine" + authCache.getString("uid", "NoUser")).push();
         userRoutine.setValue(new Routine(activity, MyUtils.getDate(), MyUtils.getTime(), baseActivity));
         userRoutine.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(LOG_TAG, "Success when adding to routine");
+                Log.d(LOG_TAG, "Success when adding to routine_icon");
             }
 
             @Override
@@ -78,8 +78,8 @@ public class FirebaseServices {
         });
     }
 
-    public void saveScore(String node, boolean didUserWin) {
-        final DatabaseReference userScore = databaseReference.child(node + "/" + authCache.getString("uid", "NoUser"));
+    public void saveScore(boolean didUserWin) {
+        final DatabaseReference userScore = databaseReference.child("users/" + authCache.getString("uid", "NoUser")+"/gamesScore");
         int wonGames, lostGames;
         if (didUserWin) {
             authCache.edit().putInt("wonGames", 1 + authCache.getInt("wonGames", 0)).apply();
@@ -88,7 +88,7 @@ public class FirebaseServices {
         }
         wonGames = authCache.getInt("wonGames", 0);
         lostGames = authCache.getInt("lostGames", 0);
-        userScore.setValue(new Score(wonGames, lostGames));
+        userScore.setValue(new User.Score(wonGames, lostGames));
         userScore.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,13 +102,13 @@ public class FirebaseServices {
         });
     }
 
-    public void getScore(String node, final GamesScoreListener listener) {
-        DatabaseReference userScore = databaseReference.child(node + "/" + authCache.getString("uid", "NoUser"));
+    public void getScore(final GamesScoreListener listener) {
+        DatabaseReference userScore = databaseReference.child("users/" + authCache.getString("uid", "NoUser")+"/gamesScore");
         userScore.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                listener.onScoreReady(dataSnapshot.getValue(Score.class));
+                listener.onScoreReady(dataSnapshot.getValue(User.Score.class));
                 //listener.onRoutineReady(routineList);
             }
 
@@ -120,8 +120,8 @@ public class FirebaseServices {
         });
     }
 
-    public void getRoutine(String node, final RoutineReadyListener listener) {
-        DatabaseReference userRoutine = databaseReference.child(node + "/" + authCache.getString("uid", "NoUser"));
+    public void getRoutine(final RoutineReadyListener listener) {
+        DatabaseReference userRoutine = databaseReference.child("routine" + authCache.getString("uid", "NoUser"));
         userRoutine.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -28,6 +28,7 @@ import miguel.example.com.finalProject.FirebaseServices;
 import miguel.example.com.finalProject.Fragments.PlacesByWeatherListFragment;
 import miguel.example.com.finalProject.Fragments.PlacesListFragment;
 import miguel.example.com.finalProject.Fragments.RoutineListFragment;
+import miguel.example.com.finalProject.Fragments.TvShowsListFragment;
 import miguel.example.com.finalProject.MyUtils;
 import miguel.example.com.finalProject.R;
 import miguel.example.com.finalProject.TicTacToe.TicTacToeFragment;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PlacesListFragment placesListFragment;
     private PlacesByWeatherListFragment placesByWeatherListFragment;
     private TicTacToeFragment ticTacToeFragment;
+    private TvShowsListFragment tvShowsListFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LoadUserData();
         initializeFragments();
         //FirebaseServices.getInstance(this).saveScore("GamesScore", false);
-
-        MenuItem item = navigationView.getMenu().findItem(R.id.it1);
-        item.setChecked(true);
         getSupportFragmentManager().beginTransaction().add(R.id.content_frame, routineListFragment).commit();
     }
 
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         placesListFragment = new PlacesListFragment();
         ticTacToeFragment = new TicTacToeFragment();
         routineListFragment = new RoutineListFragment();
+        tvShowsListFragment = new TvShowsListFragment();
     }
 
     @Override
@@ -149,7 +149,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = ticTacToeFragment;
                 CurrentFragmentID = item.getItemId();
                 break;
-
+            case R.id.it5:
+                fragment = tvShowsListFragment;
+                CurrentFragmentID = item.getItemId();
+                break;
             case R.id.about:
                 message.setMessage(getString(R.string.about_app));
                 message.show();
@@ -170,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-        item.setChecked(true);
         getSupportActionBar().setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;

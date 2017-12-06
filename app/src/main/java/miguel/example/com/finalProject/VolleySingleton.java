@@ -31,6 +31,7 @@ import java.util.List;
 import miguel.example.com.finalProject.Models.GoogleDirectionsStep;
 import miguel.example.com.finalProject.Models.OpenWeather;
 import miguel.example.com.finalProject.Models.Place;
+import miguel.example.com.finalProject.Models.TvShow;
 
 
 public class VolleySingleton {
@@ -57,6 +58,7 @@ public class VolleySingleton {
     private static final String GOOGLE_DIRECTIONS_KEY = "AIzaSyA0AY22NCjty0gkFi9xSHz-LE_iHtoAyrg";
     private static final String OPEN_WEATHER_API_KEY = "b992973a7cb4d9dc181ab38373cc5e1c";
     private static final String OPEN_WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&lang=es&";
+    private static final String TVMAZE_API_URL = "http://api.tvmaze.com/shows";
 
     private final String LOG_TAG = "Volley Singleton";
     private ImageLoader mImageLoader;
@@ -75,6 +77,12 @@ public class VolleySingleton {
         void onWeatherReady(OpenWeather weather);
         void onWeatherError(String error);
     }
+
+    public interface TvShowsListener{
+        void onTvShowsReady(List<TvShow> tvShows);
+        void onTvShowsError(String error);
+    }
+
     private VolleySingleton(Context AppContext) {
         VolleySingleton.AppContext = AppContext;
         requestQueue = getRequestQueue();
@@ -150,6 +158,32 @@ public class VolleySingleton {
 
         addToRequestQueue(MyRequest);
     }
+
+    public void getTvShowsList(final TvShowsListener listener){
+        String URL = TVMAZE_API_URL;
+        Log.d(LOG_TAG, URL);
+        Request MyRequest = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        List<TvShow> tvShows = gson.fromJson(response, new TypeToken<List<TvShow>>() {
+                        }.getType());
+                        listener.onTvShowsReady(tvShows);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        listener.onTvShowsError(getVolleyError(error));
+                    }
+                }
+        );
+
+        addToRequestQueue(MyRequest);
+    }
+
 
     public void getWeather(final double myLat, final double myLng,  final WeatherListener listener){
         String URL = OPEN_WEATHER_API_URL +"APPID=" +OPEN_WEATHER_API_KEY+"&lat="+myLat+"&lon="+myLng;

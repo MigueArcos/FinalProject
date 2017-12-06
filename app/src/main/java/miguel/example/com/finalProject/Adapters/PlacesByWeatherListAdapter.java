@@ -118,11 +118,12 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public class HeaderViewHolder extends RecyclerView.ViewHolder {
         private NetworkImageView icon;
-        private TextView weatherDescription, weatherTemperature, weatherMinTemp, weatherMaxTemp;
+        private TextView weatherDescription, weatherTemperature, weatherMinTemp, weatherMaxTemp, weatherCity;
 
         HeaderViewHolder(View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.icon);
+            weatherCity = itemView.findViewById(R.id.weather_city);
             weatherDescription = itemView.findViewById(R.id.weather_description);
             weatherTemperature = itemView.findViewById(R.id.weather_temperature);
             weatherMinTemp = itemView.findViewById(R.id.weather_min_temperature);
@@ -131,11 +132,12 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
 
         public void bindHolder() {
             if (weather != null){
-                //icon.setImageUrl(weather.getWeather().getIcon(), VolleySingleton.getInstance().getImageLoader());
-                weatherDescription.setText(weather.getWeather()[0].getDescription());
-                weatherTemperature.setText(String.valueOf(weather.getMain().getTemp()));
-                weatherMinTemp.setText(String.valueOf(weather.getMain().getTemp_min()));
-                weatherMaxTemp.setText(String.valueOf(weather.getMain().getTemp_max()));
+                icon.setImageUrl(weather.getWeather()[0].getIconURL(), VolleySingleton.getInstance().getImageLoader());
+                weatherCity.setText(weather.getCityName());
+                weatherDescription.setText(weather.getWeather()[0].getFormattedDescription());
+                weatherTemperature.setText(String.valueOf(weather.getMain().getFormattedTemp()));
+                weatherMinTemp.setText(String.valueOf(weather.getMain().getFormattedMinTemp()));
+                weatherMaxTemp.setText(String.valueOf(weather.getMain().getFormattedMaxTemp()));
             }
         }
 

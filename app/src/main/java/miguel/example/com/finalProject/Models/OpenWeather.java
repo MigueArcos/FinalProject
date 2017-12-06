@@ -9,8 +9,8 @@ public class OpenWeather {
     private Weather[] weather;
     private Main main;
 
-    public String getName() {
-        return name;
+    public String getCityName() {
+        return "Ciudad: " + name;
     }
 
     public Weather[] getWeather() {
@@ -30,12 +30,16 @@ public class OpenWeather {
             return main;
         }
 
-        public String getDescription() {
-            return description;
+        public String getFormattedDescription() {
+            return description.substring(0, 1).toUpperCase() + description.substring(1);
         }
 
         public String getIcon() {
             return icon;
+        }
+
+        public String getIconURL(){
+            return "http://openweathermap.org/img/w/"+icon+".png";
         }
     }
     public class Main{
@@ -63,6 +67,16 @@ public class OpenWeather {
 
         public double getHumidity() {
             return humidity;
+        }
+
+        public String getFormattedTemp(){
+            return "Temperatura: "+temp+"°C";
+        }
+        public String getFormattedMinTemp(){
+            return "Temperatura mínima: "+temp_min+"°C";
+        }
+        public String getFormattedMaxTemp(){
+            return "Temperatura máxima: "+temp_max+"°C";
         }
     }
 }

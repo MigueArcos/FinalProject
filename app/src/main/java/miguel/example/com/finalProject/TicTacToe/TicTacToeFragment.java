@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import miguel.example.com.finalProject.FirebaseServices;
-import miguel.example.com.finalProject.Models.Score;
+import miguel.example.com.finalProject.Models.User;
 import miguel.example.com.finalProject.R;
 
 /**
@@ -51,7 +50,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
         perfectLogic = new PerfectComputerLogic();
         dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.app_name));
-        FirebaseServices.getInstance(getActivity()).getScore("GamesScore", this);
+        FirebaseServices.getInstance(getActivity()).getScore( this);
         return rootView;
     }
 
@@ -67,7 +66,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
                     }
                 });
                 dialog.show();
-                FirebaseServices.getInstance(getActivity()).saveScore("GamesScore", true);
+                FirebaseServices.getInstance(getActivity()).saveScore(true);
                 break;
             case MACHINE_WON:
                 dialog.setMessage(MACHINE_WON);
@@ -78,7 +77,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
                     }
                 });
                 dialog.show();
-                FirebaseServices.getInstance(getActivity()).saveScore("GamesScore", false);
+                FirebaseServices.getInstance(getActivity()).saveScore(false);
                 break;
             case TIE:
                 dialog.setMessage(TIE);
@@ -136,7 +135,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
                 start.setVisibility(View.INVISIBLE);
                 naught.setVisibility(View.INVISIBLE);
                 cross.setVisibility(View.INVISIBLE);
-                FirebaseServices.getInstance(getActivity()).addToRoutine("routine","Jugaste al gato", "Jugar");
+                FirebaseServices.getInstance(getActivity()).addToRoutine("Jugaste al gato", "Jugar");
                 if(cross.isChecked()) {
                     playerTurn = true;
                     text.setText("Player's turn");
@@ -183,7 +182,7 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
         button8.setText("");
         button9.setText("");
 
-        FirebaseServices.getInstance(getActivity()).getScore("GamesScore", this);
+        FirebaseServices.getInstance(getActivity()).getScore(this);
     }
     public void placeObject(int id) {
         Button button = rootView.findViewById(id);
@@ -292,9 +291,9 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onScoreReady(Score scores) {
-        if (scores != null){
-            score.setText(scores.getWonGames() +"-" + scores.getLostGames());
+    public void onScoreReady(User.Score score) {
+        if (score != null){
+            this.score.setText(score.getWonGames() +"-" + score.getLostGames());
         }
 
     }

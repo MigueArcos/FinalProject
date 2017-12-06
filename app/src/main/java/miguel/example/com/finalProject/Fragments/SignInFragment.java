@@ -32,12 +32,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.regex.Pattern;
 
 import miguel.example.com.finalProject.Activities.MainActivity;
-import miguel.example.com.finalProject.FirebaseServices;
-import miguel.example.com.finalProject.Models.Score;
 import miguel.example.com.finalProject.R;
 import miguel.example.com.finalProject.Models.User;
 
@@ -152,30 +151,18 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
             // Sign in success, update UI with the signed-in user's information
             Log.d(LOG_TAG, "signInWithEmail:success");
             DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(task.getResult().getUser().getUid());
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            getActivity().startActivity(intent);
-            userReference.addValueEventListener(new ValueEventListener() {
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    System.out.println(user);
+                    System.out.println("AQUI ESTOY "+new Gson().toJson(user));
                     ShPrUser.edit().putString("birthDate", user.getBirthDate()).putString("name", user.getName()).putString("email", user.getEmail()).putString("genre", user.getGenre()).putString("uid", task.getResult().getUser().getUid()).apply();
-
-                    FirebaseServices.getInstance(getActivity()).getScore("GamesScore", new FirebaseServices.GamesScoreListener() {
-                        @Override
-                        public void onScoreReady(Score score) {
-                            if (score != null){
-                                ShPrUser.edit().putInt("wonGames", score.getWonGames()).apply();
-                                ShPrUser.edit().putInt("lostGames", score.getLostGames()).apply();
-                            }
-                        }
-
-                        @Override
-                        public void onScoreError(String error) {
-                            System.out.println("The read failed: " + error);
-                        }
-                    });
-
+                    if (user.getGamesScore() != null){
+                        ShPrUser.edit().putInt("wonGames",user.getGamesScore().getWonGames() ).apply();
+                        ShPrUser.edit().putInt("lostGames", user.getGamesScore().getLostGames()).apply();
+                    }
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    getActivity().startActivity(intent);
                 }
 
                 @Override
@@ -184,6 +171,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
                     System.out.println("The read failed: " + databaseError.getCode());
                 }
             });
+
         } else {
             // If sign in fails, display a message to the user.
             progressDialog.dismiss();

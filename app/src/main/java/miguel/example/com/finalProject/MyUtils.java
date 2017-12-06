@@ -41,7 +41,7 @@ public class MyUtils {
 
     public static String getTime(){
         Calendar myCalendar = Calendar.getInstance();
-        String myFormat = "hh:mm:ss"; //In which you need put here
+        String myFormat = "hh:mm:ss a"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         return sdf.format(myCalendar.getTime());
     }

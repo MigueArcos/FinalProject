@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Proyecto final</string>
     <string name="action_settings">Settings</string>
     <string name="LoginActivityTitle">Login</string>
     <string name="fragment_login_email_label">Correo electrónico</string>
@@ -39,4 +39,10 @@
     <string name="fragment_routine_list_empty_label">No hay datos de tus rutinas aun</string>
     <string name="routine_list_fragment_label">Mi Rutina</string>
     <string name="fragment_tic_tac_toe_score_label">Historico de puntajes</string>
+    <string name="drawer_menu_exterior_entertainment_label">Entretenimiento al exterior</string>
+    <string name="drawer_menu_interior_entertainment_label">Entretenimiento en el interior</string>
+    <string name="fragment_weather_places_label">Lugares de acuerdo al clima</string>
+    <string name="fragment_near_places_label">Lugares cercanos</string>
+    <string name="fragment_tic_tac_toe_label">Juego del gato</string>
+    <string name="fragment_tv_shows_label">Shows de televisión</string>
 </resources>
