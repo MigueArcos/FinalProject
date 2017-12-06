@@ -7,7 +7,7 @@
         android:icon="@drawable/routine_icon"
         android:title="@string/routine_list_fragment_label" />
 
-   
+
     <group android:checkableBehavior="single">
         <item android:title="@string/drawer_menu_exterior_entertainment_label">
             <menu>

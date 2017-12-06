@@ -49,7 +49,7 @@ public class PlacesByWeatherListFragment extends Fragment implements PlacesByWea
     private LocationManager locationManager;
     private Location location;
     private double latitude = 0, longitude = 0;
-
+    private OpenWeather weather;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,8 +112,8 @@ public class PlacesByWeatherListFragment extends Fragment implements PlacesByWea
 
     @Override
     public void onPlacesListFetched(List<Place> data) {
-        this.data = data;
-        adapter.setData(data);
+        this.data = filterData(data);
+        adapter.setData(this.data);
         refreshLayout.setRefreshing(false);
     }
 
@@ -141,6 +141,7 @@ public class PlacesByWeatherListFragment extends Fragment implements PlacesByWea
 
     @Override
     public void onWeatherReady(OpenWeather weather) {
+        this.weather = weather;
         adapter.setWeather(weather);
         VolleySingleton.getInstance(getActivity()).getPlacesList(latitude, longitude, PlacesByWeatherListFragment.this);
     }
@@ -148,6 +149,22 @@ public class PlacesByWeatherListFragment extends Fragment implements PlacesByWea
     @Override
     public void onWeatherError(String error) {
         Log.d("WeatherError", error);
+    }
+
+    private List<Place> filterData(List<Place> data){
+        List<Place> filteredData = new ArrayList<>();
+        for (Place place: data){
+            if (place.checkIfPlaceIsAnEstablishment()){
+                filteredData.add(place);
+            }else{
+                String mainWeatherCondition = weather.getWeather()[0].getMain();
+                boolean isAGoodCondition = !mainWeatherCondition.equalsIgnoreCase("Rain") && !mainWeatherCondition.equalsIgnoreCase("Snow") && !mainWeatherCondition.equalsIgnoreCase("Extreme");
+                if (isAGoodCondition && weather.getMain().getTemp() > 15){
+                    filteredData.add(place);
+                }
+            }
+        }
+        return filteredData;
     }
 }
 

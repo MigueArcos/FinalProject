@@ -46,17 +46,17 @@ public class RoutesActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(placeLat, placeLng);
+        LatLng myLatLng = new LatLng(placeLat, placeLng);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 18));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
 
         googleMap.addMarker(new MarkerOptions()
                 .title(placeName)
                 .snippet(placeAddress)
-                .position(sydney));
+                .position(myLatLng));
         this.googleMap = googleMap;
         VolleySingleton.getInstance(this).getRoute(deviceLat, deviceLng, placeLat, placeLng, this);
     }

@@ -45,4 +45,9 @@
     <string name="fragment_near_places_label">Lugares cercanos</string>
     <string name="fragment_tic_tac_toe_label">Juego del gato</string>
     <string name="fragment_tv_shows_label">Shows de televisión</string>
+    <string name="tic_tac_toe_fragment_player_turn_label">Tu turno</string>
+    <string name="tic_tac_toe_fragment_computer_turn_label">Turno de la maquina</string>
+    <string name="tic_tac_toe_fragment_win_message">Has ganado el juego :)</string>
+    <string name="tic_tac_toe_fragment_tie_message">Es un empate</string>
+    <string name="tic_tac_toe_fragment_lost_message">La maquina gano el juego</string>
 </resources>

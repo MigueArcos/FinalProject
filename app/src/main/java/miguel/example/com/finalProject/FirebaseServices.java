@@ -41,7 +41,7 @@ public class FirebaseServices {
 
     public FirebaseServices() {
         firebaseAuth = FirebaseAuth.getInstance();
-        database = database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
     }
 
@@ -65,7 +65,7 @@ public class FirebaseServices {
         //The .push() method is a way to insert a new element with an unique key like a database
         DatabaseReference userRoutine = databaseReference.child("routine" + authCache.getString("uid", "NoUser")).push();
         userRoutine.setValue(new Routine(activity, MyUtils.getDate(), MyUtils.getTime(), baseActivity));
-        userRoutine.addValueEventListener(new ValueEventListener() {
+        userRoutine.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(LOG_TAG, "Success when adding to routine_icon");
@@ -89,7 +89,7 @@ public class FirebaseServices {
         wonGames = authCache.getInt("wonGames", 0);
         lostGames = authCache.getInt("lostGames", 0);
         userScore.setValue(new User.Score(wonGames, lostGames));
-        userScore.addValueEventListener(new ValueEventListener() {
+        userScore.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(LOG_TAG, "Success saving data");
@@ -104,7 +104,7 @@ public class FirebaseServices {
 
     public void getScore(final GamesScoreListener listener) {
         DatabaseReference userScore = databaseReference.child("users/" + authCache.getString("uid", "NoUser")+"/gamesScore");
-        userScore.addValueEventListener(new ValueEventListener() {
+        userScore.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -122,7 +122,8 @@ public class FirebaseServices {
 
     public void getRoutine(final RoutineReadyListener listener) {
         DatabaseReference userRoutine = databaseReference.child("routine" + authCache.getString("uid", "NoUser"));
-        userRoutine.addValueEventListener(new ValueEventListener() {
+
+        userRoutine.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Routine> routineList = new ArrayList<>();

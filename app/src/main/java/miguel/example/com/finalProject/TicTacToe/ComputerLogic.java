@@ -4,6 +4,8 @@ import android.os.Handler;
 
 import java.util.Random;
 
+import miguel.example.com.finalProject.R;
+
 import static miguel.example.com.finalProject.TicTacToe.TicTacToeFragment.MACHINE_WON;
 
 public class ComputerLogic {
@@ -36,14 +38,14 @@ public class ComputerLogic {
                 if(movePlayed) {
                     board.check();
                     if (board.playerWon && !board.draw) {
-                        board.text.setText("Player Won!");
+                        board.text.setText(board.getString(R.string.tic_tac_toe_fragment_win_message));
                     }
                     else if (board.computerWon && !board.draw) {
-                        board.text.setText("Computer Won!");
+                        board.text.setText(board.getString(R.string.tic_tac_toe_fragment_lost_message));
                         board.saveScore(MACHINE_WON);
                     }
                     else if (board.draw) {
-                        board.text.setText("It's a draw!");
+                        board.text.setText(board.getString(R.string.tic_tac_toe_fragment_tie_message));
                     }
                     else {
                         board.changeTurn();

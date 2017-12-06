@@ -138,10 +138,10 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
                 FirebaseServices.getInstance(getActivity()).addToRoutine("Jugaste al gato", "Jugar");
                 if(cross.isChecked()) {
                     playerTurn = true;
-                    text.setText("Player's turn");
+                    text.setText(R.string.tic_tac_toe_fragment_player_turn_label);
                 } else if(naught.isChecked()) {
                     playerTurn = false;
-                    text.setText("Computer's turn");
+                    text.setText(R.string.tic_tac_toe_fragment_computer_turn_label);
                     logic.nextMove(this); // Place the first move in the center
                 }
 
@@ -196,11 +196,11 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
 
         check(); // check if the game is over
         if(playerWon && !draw) {
-            text.setText("Player Won!");
+            text.setText(R.string.tic_tac_toe_fragment_win_message);
             saveScore(USER_WON);
         }
         else if(draw) {
-            text.setText("It's a draw!");
+            text.setText(R.string.tic_tac_toe_fragment_tie_message);
             saveScore(TIE);
         }
         else {
@@ -211,9 +211,9 @@ public class TicTacToeFragment extends Fragment implements View.OnClickListener,
     public void changeTurn() {
         playerTurn = !playerTurn;
         if(playerTurn)
-            text.setText("Player's Turn");
+            text.setText(R.string.tic_tac_toe_fragment_player_turn_label);
         else
-            text.setText("Computer's Turn");
+            text.setText(R.string.tic_tac_toe_fragment_computer_turn_label);
     }
 
     public void check() {

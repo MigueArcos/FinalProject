@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import miguel.example.com.finalProject.Models.OpenWeather;
@@ -38,6 +39,8 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
         notifyDataSetChanged();
     }
 
+
+
     public void setWeather(OpenWeather weather) {
         this.weather = weather;
     }
@@ -65,7 +68,7 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
         if (position == 0) {
             ((HeaderViewHolder) holder).bindHolder();
         } else {
-            ((ItemView) holder).bindHolder(position);
+            ((ItemView) holder).bindHolder(position - 1);
         }
     }
 
@@ -105,9 +108,9 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         public void bindHolder(int position) {
-            icon.setImageUrl(data.get(position - 1).getIcon(), VolleySingleton.getInstance().getImageLoader());
-            title.setText(data.get(position - 1).getName());
-            subtitle.setText(data.get(position - 1).getVicinity());
+            icon.setImageUrl(data.get(position).getIcon(), VolleySingleton.getInstance().getImageLoader());
+            title.setText(data.get(position).getName());
+            subtitle.setText(data.get(position).getVicinity());
         }
 
         @Override
@@ -131,7 +134,7 @@ public class PlacesByWeatherListAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         public void bindHolder() {
-            if (weather != null){
+            if (weather != null) {
                 icon.setImageUrl(weather.getWeather()[0].getIconURL(), VolleySingleton.getInstance().getImageLoader());
                 weatherCity.setText(weather.getCityName());
                 weatherDescription.setText(weather.getWeather()[0].getFormattedDescription());

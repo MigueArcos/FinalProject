@@ -9,7 +9,20 @@ public class Place {
     private String icon;
     private String name;
     private String vicinity;
+    private String[] types;
 
+    public String[] getTypes() {
+        return types;
+    }
+    public boolean checkIfPlaceIsAnEstablishment(){
+        boolean isEstablishment = false;
+        for (String type: types){
+            if (type.equalsIgnoreCase("establishment")){
+                return true;
+            }
+        }
+        return isEstablishment;
+    }
     public Geometry getGeometry() {
         return geometry;
     }
